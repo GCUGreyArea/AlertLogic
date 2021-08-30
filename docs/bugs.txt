@@ -1,0 +1,10 @@
+current known problems:
+    1. the XML translation doesn't take xml escape sequences into account, and will double double escapes them. This is not a bug persay as
+    &amp; is in fact the xml escaped '&' character. The word '&amp;' would need to be represented as '&amp;amp;' to be compatible with most xml parsers.
+
+    2. Not all words will parse as words. The parser does not try to do anything clever as it is a smiple tokaniser that starts with all characters that can be printed,
+    and terminates the word when white space is encountered. A much better way to do this would be to create a table of recognisable symbol sequences and match against it.
+    This could be done with regular expressions, or could be done by implimenting a table based parse / lexer with a too; such as Flex / Bison. The other alternative is to
+    alow only legal words ([A-Za-z]). As this does not represent many words found in log files and onlilne text, I chose to represent punctuation characters in words.
+
+    3.
