@@ -432,9 +432,9 @@ inline static bool match_string(void * v1, void* v2) {
  * @return false
  */
 bool isWordChar(unsigned char c) {
-    switch(c) {
-        case 65 ... 90:     return true;
-        case 98 ... 122:    return true;
+    switch((char)c) {
+        case 'a' ... 'z':     return true;
+        case 'A' ... 'Z':    return true;
         default:
             break;
     }
@@ -443,7 +443,7 @@ bool isWordChar(unsigned char c) {
 }
 
 /**
- * @brief Match any valid character
+ * @brief Match any valid character from [!-~]
  *
  * @param c
  * @return true
@@ -459,16 +459,18 @@ inline static bool isValidChar(unsigned char c) {
     return false;
 }
 
+/**
+ * @brief Match any printable character..
+ * 
+ * @param c 
+ * @return true 
+ * @return false 
+ */
 inline static bool isPrintableCharacter(unsigned char c) {
     switch(c) {
-        case 0 ... 32:      return false;
         case 33 ... 126:    return true;
-        case 127:           return false;
-        case 129:           return false;
-        case 130 ... 142:   return true;
-        case 143 ... 144:   return false;
+        case 130 ... 140:   return true;
         case 145 ... 156:   return true;
-        case 157:           return false;
         case 158 ... 255:   return true;
         default:
             break;
@@ -514,7 +516,7 @@ fileStats_t * buffScan_init(size_t mapSize) {
         // Default to standard out.
         buff->outfile  = stdout;
 
-        buff->matchFunc = isValidChar;
+        buff->matchFunc = isWordChar;
 
         // This will get made when we need it...
         buff->wordFreqStruct = NULL;
@@ -566,11 +568,12 @@ void buffScan_setWordMatch(fileStats_t * stats, const char * funcName) {
 inline static bool isWhiteSpace(unsigned char c) {
     switch(c) {
         case 0 ... 32:      return true;
-        // case 127:           return true;
-        // case 129:           return true;
-        // case 143 ... 144:   return true;
-        // case 157:           return true;
-        // case 160:           return true;
+        case 127:           return true;
+        case 129:           return true;
+        case 141:           return true;
+        case 143 ... 144:   return true;
+        case 157:           return true;
+        case 160:           return true;
         // case 173:           return true;
         default:
             break;
@@ -609,16 +612,9 @@ void doWordFound(fileStats_t* stats,const unsigned char * buffer, size_t start, 
         char * wordBuffer = (char *) alloc_mem(sizeof(char) * buffLen+1);
         strncpy(wordBuffer,(char*) &buffer[start],buffLen);
 
-
-
-        // if(wordBuffer[buffLen] == '.') {
-        //     wordBuffer[buffLen] = '\0';
-        // }
-        // else {
         wordBuffer[buffLen] = '\0';
-        // }
 
-        printf("WORD: %s\n", wordBuffer);
+        // printf("WORD: %s\n", wordBuffer);
         wordFreqAn_t * freq = (wordFreqAn_t *) hashMap_getWithKey(stats->map,(void*) wordBuffer);
 
         if(freq) {
@@ -664,7 +660,7 @@ size_t buffScan_scan(fileStats_t* stats,const unsigned char * buffer, size_t buf
     // If word freequency stats have been claculated, assume we are doing a second parse
     // and reset the stats. Words in the list will be untouched!
     if(stats->wordsFreqStats && stats->wordFreqStruct) {
-        printf("WORDS STATS ARE ALIVE!!!\n");
+        fprintf(stderr,"WARNING: Wordstats structure is still in use. Removing\n");
         utilsListDelete(stats->wordFreqStruct->commonWordList);
         free(stats->wordFreqStruct);
         stats->wordFreqStruct = NULL;
@@ -675,8 +671,8 @@ size_t buffScan_scan(fileStats_t* stats,const unsigned char * buffer, size_t buf
     bool word=false;
     size_t startIdx=0;
 
-    for(size_t i=0;i<buffLen;i++) {
-        // Word has started
+    size_t i=0;
+    for(/*declared above*/i=0;i<buffLen;i++) {
         if(word && stats->matchFunc(buffer[i])) {
             continue;
         }
@@ -686,7 +682,6 @@ size_t buffScan_scan(fileStats_t* stats,const unsigned char * buffer, size_t buf
         }
         else if(!stats->matchFunc(buffer[i])) {
             if(isWhiteSpace(buffer[i])) {
-                printf("WHITESPACE\n");
                 stats->whiteSpace++;
             }
 
@@ -697,22 +692,21 @@ size_t buffScan_scan(fileStats_t* stats,const unsigned char * buffer, size_t buf
         }
     }
 
-    size_t ret=0;
-
-    // Scan for character freaquency
-    for(ret=0;ret<buffLen;ret++) {
-        char c = buffer[ret];
-        stats->ASCII[(int)c]++;
-        stats->charScanned++;
+    if(stats->charFreqStats) {
+        for(i=0;i<buffLen;i++) {
+            char c = buffer[i];
+            stats->ASCII[(int)c]++;
+            stats->charScanned++;
+        }
     }
 
-    return ret;
+    return i; // Number of characters scanned
 }
 
 /**
  * @brief Release the scanner and al it's memory
  *
- * @param stats
+ * @param stats to be released
  */
 void buffScan_release(fileStats_t* stats) {
     // Release the list
