@@ -51,7 +51,7 @@ int main(int argc, const char ** argv) {
 	bool wordStats = false;
 	bool charStats = false;
 	bool highestFreeWordStats = false;
-	char * matchFunc = "isValidChar";
+	char * matchFunc = "isWordChar";
 
 	int i=1;
 	while(i<argc) {
