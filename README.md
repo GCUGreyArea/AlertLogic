@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # NOTES:
 1. the XML translation doesn't take xml escape sequences into account, and will double double escapes them. This is not really bug as
 &amp; is the xml escaped character '&'. The word '&amp;' would need to be represented as '&amp;amp;' to be compatible with most xml parsers. It would 
@@ -15,3 +16,6 @@ formated structure, but this is a minor problem. Note that while this functional
 
 # LINKS:
 1. https://www.ascii-code.com/
+=======
+
+>>>>>>> 48342ece118ead22d432743384dd0928bb578b27
