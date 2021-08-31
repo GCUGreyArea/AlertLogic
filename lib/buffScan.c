@@ -954,10 +954,11 @@ void printFrequencyAnalysis(fileStats_t* stats) {
     }
 
     // This is always output.
-    fprintf(stats->outfile,"\t<whiteSpaceCount>%d</whiteSpaceCount>\n",                 stats->whiteSpace);
-    fprintf(stats->outfile, "\t<averageWordLen>%0.2f</averageWordLen>\n",               stats->wordFreqStruct->averageWordLen);
-    fprintf(stats->outfile, "\t<averageHighFreqWorLen>%0.2f</averageHighFreqWorLen>\n", stats->wordFreqStruct->averageCommmonWordLen);
-    fprintf(stats->outfile,"\t<numCharScanned>%d</numCharScanned>\n",                   stats->charScanned);
+    double percent = (double) ((double) stats->whiteSpace / (double) stats->charScanned) * 100;
+    fprintf(stats->outfile,"\t<whiteSpaceCount>%d</whiteSpaceCount><percent>%0.2f</percent>\n",    stats->whiteSpace,percent);
+    fprintf(stats->outfile, "\t<averageWordLen>%0.2f</averageWordLen>\n",                          stats->wordFreqStruct->averageWordLen);
+    fprintf(stats->outfile, "\t<averageHighFreqWorLen>%0.2f</averageHighFreqWorLen>\n",            stats->wordFreqStruct->averageCommmonWordLen);
+    fprintf(stats->outfile,"\t<numCharScanned>%d</numCharScanned>\n",                              stats->charScanned);
     printTableEnd(stats);
 }
 
