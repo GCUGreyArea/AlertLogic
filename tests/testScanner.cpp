@@ -7,9 +7,10 @@
  * @date 2021-08-31
  * 
  * @copyright Copyright (c) 2021
- * @addtogroup application
  * @addtogroup test
- * @addtogroup library
+ * @{
+ * @addtogroup scanner
+ * @{
  */
 #include <gtest/gtest.h>
 #include <libfilestat.h>
@@ -256,7 +257,6 @@ TEST(testScanner,testScannerReconisesNumberSign) {
 }
 
 /**
- * @}
  * @}
  * @}
  */

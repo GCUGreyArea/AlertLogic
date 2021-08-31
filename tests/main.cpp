@@ -6,21 +6,28 @@
  * @date 2021-08-31
  * 
  * @copyright Copyright (c) 2021
- * @addtogroup test
- * @addtogroup library
+ * @addtogroup test 
+ * @{
+ * @addtogroup main
+ * @{
+ * 
  */
 
 
 #include <gtest/gtest.h>
-
-
-int main(int argc, char ** argv) {
-    testing::InitGoogleTest(&argc, argv);
+/**
+ * @brief Main function for test harness
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+int main(int argc, const char ** argv) {
+    testing::InitGoogleTest(&argc, (char**) argv);
     return RUN_ALL_TESTS();
 }
 
 /**
  * @}
  * @}
- * 
  */

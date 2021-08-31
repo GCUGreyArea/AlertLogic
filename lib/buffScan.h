@@ -7,7 +7,11 @@
  *
  * @copyright Copyright (c) Alert Logic 2021
  * @addtogroup application
+ * 
  * @addtogroup library
+ * @{
+ * @addtogroup buffScan
+ * @{
  */
 #ifndef _BUFF_SCAN_
 #define _BUFF_SCAN_
@@ -58,6 +62,5 @@ hashMap_t * getHashMap(fileStats_t* stats);
 /**
  * @}
  * @}
- * 
  */
 #endif//_BUFF_SCAN_

@@ -4,8 +4,10 @@
 /**
  * @brief Library for application and test code
  *
- * @addtogroup applicaton
  * @addtogroup library
+ * @{
+ * @addtogroup filestats
+ * @{
  */
 
 #ifdef __cplusplus

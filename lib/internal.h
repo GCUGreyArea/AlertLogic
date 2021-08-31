@@ -13,8 +13,10 @@
  * @param line   The line the macro was invoked at
  * @return void* The memory requested, or NULL if unsucessful
  * 
- * @addtogroup application
- * @addtogroup library
+ * @addtogroup libnrary
+ * @{
+ * @addtogroup internal
+ * @{
  */
 void * _alloc_mem_(size_t amount,const char * func, const char * file, int line);
 #define alloc_mem(X) _alloc_mem_(X,__FUNCTION__,__FILE__,__LINE__)

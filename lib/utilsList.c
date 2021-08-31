@@ -1,3 +1,17 @@
+/**
+ * @file utilsList.c
+ * @author Barry Robinson (barry.w.robinson64@gmail.com)
+ * @brief Generica linked list functionality for sequention orderd access
+ * @version 0.1
+ * @date 2021-08-31
+ * 
+ * @copyright Copyright (c) 2021
+ * @addtogroup library
+ * @{
+ * @addtogroup utilsList
+ * @{
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

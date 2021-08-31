@@ -6,8 +6,10 @@
  * @date 2021-08-31
  * 
  * @copyright Copyright (c) 2021
- * @addtogroup application
  * @addtogroup library
+ * @{
+ * @addtogroup rdFiles
+ * @{
  */
 
 #include <stdio.h>

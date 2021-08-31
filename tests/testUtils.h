@@ -9,9 +9,10 @@
  * @date 2021-08-31
  * 
  * @copyright Copyright (c) 2021
- * @addtogroup application
  * @addtogroup test
- * @addtogroup library
+ * @{
+ * @addtogroup utils
+ * @{
  */
 
 void randomiseString(char * str);
@@ -19,7 +20,6 @@ void buildRandomTestFile(const char * fillPathAndName, const char * testFrase, i
 void buildNormalTestFile(const char * fillPathAndName, const char * testFrase, size_t buffSize, int writeTimes, bool addIdx);
 
 /**
- * @}
  * @}
  * @}
  */

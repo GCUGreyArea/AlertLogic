@@ -7,6 +7,9 @@
  *
  * @copyright Copyright (c) Alert Logic 2021
  * @addtogroup application
+ * @{
+ * @addtogroup main
+ * @{
  */
 
 
@@ -22,12 +25,11 @@
 #include <libfilestat.h>
 
 #include "filestat.h"
-
 /**
- * @brief 
- * @addtogroup aplication
+ * @brief Help generatore for filestat application
+ * 
  */
-inline static void printHelp() {
+void printHelp() {
 	printf("Usage : filestat <--infile inName> [--outfile stdout --tablesize 4096 --infilebuff size --matchfunc name --wordstats --highfreqwordstats --charstats --scanconfig file --help]\n");
 	printf("\t--infile: <the name of the text file to parse>\n");
 	printf("\t--outfile: [the name of the file to write write to, or stdout] ");
@@ -48,6 +50,13 @@ inline static void printHelp() {
 	printf("NOTE 2: If --scanconfig is used --matchfunc will be ignored\n");
 }
 
+/**
+ * @brief Main function for filestat applicatoin
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
 int main(int argc, const char ** argv) {
 	char * inputFile = NULL;
 	char * outFileName = "stdout";
@@ -214,5 +223,5 @@ int main(int argc, const char ** argv) {
 
 /**
  * @}
- * 
+ * @}
  */
