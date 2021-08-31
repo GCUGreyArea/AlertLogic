@@ -1,8 +1,13 @@
 /**
  * @mainpage	filesatsta version 1.0
  * @section     intro_sec Introduction
- * @notes:
- *   1. the XML translation doesn't take xml escape sequences into account, and will double double escapes them. This is not really bug as
+ * 
+ * 1. [application]@(ref application) Main application files
+ * 2. [test](@ref test) Test files for GTest modules
+ * 3. [library](@ref library) Library code for application 
+ * 
+ * @note  
+ * 1. the XML translation doesn't take xml escape sequences into account, and will double double escapes them. This is not really bug as
  *   &amp; is the xml escaped character '&'. The word '&amp;' would need to be represented as '&amp;amp;' to be compatible with most xml parsers. It would 
  *   othersise be a representation, not of "&amp;" but of "&".
  *
