@@ -50,8 +50,8 @@ typedef bool(wordMatch)(unsigned char c);
 struct fileStats_s {
     int ASCII[TBL_SIZE];
     const char * ASCII_STRINGS[TBL_SIZE];
-    int charScanned;
-    int wordCount;
+    size_t charScanned;
+    size_t wordCount;
     utilsList_t * wordList;
     hashMap_t * map;
     int whiteSpace;
@@ -954,11 +954,18 @@ void printFrequencyAnalysis(fileStats_t* stats) {
     }
 
     // This is always output.
-    double percent = (double) ((double) stats->whiteSpace / (double) stats->charScanned) * 100;
+    float percent = 0.0;
+    if(stats->whiteSpace == stats->charScanned) {
+        percent = 100;
+    }
+    else {
+        percent = ((float) stats->whiteSpace / (float) stats->charScanned) * 100;
+    }
+
     fprintf(stats->outfile,"\t<whiteSpaceCount>%d</whiteSpaceCount><percent>%0.2f</percent>\n",    stats->whiteSpace,percent);
     fprintf(stats->outfile, "\t<averageWordLen>%0.2f</averageWordLen>\n",                          stats->wordFreqStruct->averageWordLen);
     fprintf(stats->outfile, "\t<averageHighFreqWorLen>%0.2f</averageHighFreqWorLen>\n",            stats->wordFreqStruct->averageCommmonWordLen);
-    fprintf(stats->outfile,"\t<numCharScanned>%d</numCharScanned>\n",                              stats->charScanned);
+    fprintf(stats->outfile,"\t<numCharScanned>%ld</numCharScanned>\n",                             stats->charScanned);
     printTableEnd(stats);
 }
 
