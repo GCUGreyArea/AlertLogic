@@ -28,11 +28,11 @@ typedef struct fileStats_s fileStats_t;
  *
  */
 typedef struct wordFreqAn_s {
-    char * word;        // !< The recognised word
-    int freq;           // !< The frequency of the word in the file
+    char * word;         // !< The recognised word
+    int freq;            // !< The frequency of the word in the file
     double freqPercent;  // !< Freequency of the word with respect to all scanned words
-    int len;            // !< The length of the word
-    FILE * outfile;     // !< The file to write out the report about the word
+    int len;             // !< The length of the word
+    FILE * outfile;      // !< The file to write out the report about the word
 } wordFreqAn_t;
 
 /**
