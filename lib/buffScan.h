@@ -44,9 +44,10 @@ int getWhiteSpaceCount(fileStats_t* stats);
 
 void buffScan_setWordStats(fileStats_t * stats, bool val);
 void buffScan_setCharFreqStats(fileStats_t * stats, bool val);
-void buffScan_setHestFreqWordsStats(fileStats_t * stats, bool val);
+void buffScan_setHighestFreqWordsStats(fileStats_t * stats, bool val);
 void buffScan_setWordMatch(fileStats_t * stats, const char * funcName);
 void buffScan_setOutputFile(fileStats_t * stats, FILE * file);
+void buffScan_addCharToMatchFunc(unsigned char c);
 
 // Helper
 bool isWordChar(unsigned char c);

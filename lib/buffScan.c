@@ -13,6 +13,14 @@
 
 #define TBL_SIZE 255
 
+static bool MATCH[TBL_SIZE] = {false};
+
+inline static void buffScan_setupTable() {
+    for(int i=0;i<TBL_SIZE;i++) {
+        MATCH[i] = false;
+    }
+}
+
 typedef struct wordFreq_s {
     utilsList_t * commonWordList;
     float averageWordLen;
@@ -139,7 +147,7 @@ void wordList_printCB(void * val) {
  * @param v2 Char string to match
  * @return int
  */
-int wordLilst_machCB(void * v1, void * v2) {
+inline static int wordLilst_machCB(void * v1, void * v2) {
     wordFreqAn_t * lWord = (wordFreqAn_t *) v1;
     char * word = (char*) v2;
 
@@ -153,7 +161,7 @@ int wordLilst_machCB(void * v1, void * v2) {
  *       very particularly characters that would prevent XML from being parsed correctly.
  * @param tbl
  */
-static void buffScan_setupAsciiTable(const char ** tbl) {
+inline static void buffScan_setupAsciiTable(const char ** tbl) {
     tbl[0] =	"NUL";
     tbl[1] =	"SOH";
     tbl[2] =	"STX";
@@ -412,6 +420,10 @@ static void buffScan_setupAsciiTable(const char ** tbl) {
     tbl[255] =	"Latin_small_letter_y_with_diaeresis";          // ÿ
 }
 
+void buffScan_addCharToMatchFunc(unsigned char c) {
+    MATCH[c] = true;
+}
+
 inline static uint32_t generate_key(void* data) {
     return hashMap_hashString32((const char *)data);
 }
@@ -422,6 +434,17 @@ inline static void print_string(void * data) {
 
 inline static bool match_string(void * v1, void* v2) {
     return wordLilst_machCB(v1,v2) == 0;
+}
+
+/**
+ * @brief Match characters in a text file table
+ * 
+ * @param c 
+ * @return true 
+ * @return false 
+ */
+bool isTableMatch(unsigned char c) {
+    return MATCH[c];
 }
 
 /**
@@ -494,7 +517,9 @@ fileStats_t * buffScan_init(size_t mapSize) {
             buff->ASCII[i] = 0;
         }
 
+        // Setup tables
         buffScan_setupAsciiTable(buff->ASCII_STRINGS);
+        buffScan_setupTable();
 
         // Word list for itteration. Might need to do away with this!
         buff->wordList = utilsListMake(&cbs);
@@ -537,7 +562,7 @@ void buffScan_setCharFreqStats(fileStats_t * stats, bool val) {
     }
 }
 
-void buffScan_setHestFreqWordsStats(fileStats_t * stats, bool val) {
+void buffScan_setHighestFreqWordsStats(fileStats_t * stats, bool val) {
     if(stats) {
         stats->highestFreeWordStats = val;
     }
@@ -560,6 +585,9 @@ void buffScan_setWordMatch(fileStats_t * stats, const char * funcName) {
         }
         else if(strcmp(funcName,"isPrintableCharacter") == 0) {
             stats->matchFunc = isPrintableCharacter;
+        }
+        else if(strcmp(funcName,"isTableMatch") == 0) {
+            stats->matchFunc = isTableMatch;
         }
     }
 }
