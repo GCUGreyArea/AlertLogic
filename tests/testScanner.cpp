@@ -1,3 +1,15 @@
+
+/**
+ * @file testScanner.cpp
+ * @author Barry Robinson (barry.w.robinson64@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-08-31
+ * 
+ * @copyright Copyright (c) 2021
+ * @addtogroup test
+ * @addtogroup library
+ */
 #include <gtest/gtest.h>
 #include <libfilestat.h>
 
@@ -241,29 +253,8 @@ TEST(testScanner,testScannerReconisesNumberSign) {
     releaseFile(fp);
     remove(fileName);
 }
-/*
-TEST(testScanner,testScannerReconisesNumberSign) {
-    const char * fileName = "./test9.txt";
-    // const char * phrase = "##########";
-    // Build a valid file to open with invalid arguments
-    // buildNormalTestFile(fileName,phrase,strlen(phrase),2,false);
-    tFileDetails * fp = openFile(fileName, (strlen(phrase) * 2) + 4);
-    ASSERT_TRUE(fp != nullptr);
 
-    fileStats_t * stats = buffScan_init(4096);
-    buffScan_setCharFreqStats(stats,true);
-
-    const unsigned char * buff = getNexFileBuffer(fp);
-    ASSERT_TRUE(buff != nullptr);
-
-    size_t lastRead = getLastReadSize(fp);
-
-    buffScan_scan(stats,buff,lastRead);
-
-    printFrequencyAnalysis(stats);
-
-    buffScan_release(stats);
-    releaseFile(fp);
-    remove(fileName);
-}
-*/
+/**
+ * @}
+ * @}
+ */

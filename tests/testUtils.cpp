@@ -1,3 +1,15 @@
+/**
+ * @file testUtils.cpp
+ * @author Barry Robinson (barry.w.robinson64@gmail.com)
+ * @brief Test the utility functions
+ * @version 0.1
+ * @date 2021-08-31
+ * 
+ * @copyright Copyright (c) 2021
+ * @addtogroup test
+ * @addtogroup library
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -89,3 +101,8 @@ void buildNormalTestFile(const char * fillPathAndName, const char * testFrase, s
 
     fclose(fp);
 }
+
+/**
+ * @}
+ * @}
+ */

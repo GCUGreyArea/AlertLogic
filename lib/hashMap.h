@@ -1,7 +1,17 @@
 #ifndef _HASH_MAP_
 #define _HASH_MAP_
 
-#include <stdio.h>
+/**
+ * @file hashMap.h
+ * @author barry Robinson (barry.w.robinson64@dgmail.com)
+ * @brief Hash table for fast word matching
+ * @version 0.1
+ * @date 2021-08-31
+ * 
+ * @copyright Copyright (c) 2021
+ * @addtogroup application
+ * @addtogroup library
+ */
 #include <stdlib.h>
 #include <inttypes.h>
 #include <stdbool.h>
@@ -53,5 +63,9 @@ uint32_t hashMap_hashString32(const char * s);
 float hashMap_calculateOcupancyMetric(hashMap_t * map);
 void hashMap_printStats(hashMap_t *map);
 
-
+/**
+ * @}
+ * @}
+ * 
+ */
 #endif//_HASH_MAP_

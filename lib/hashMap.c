@@ -1,3 +1,18 @@
+/**
+ * @file hashMap.c
+ * @author Barry Robinson (barry.w.robinson64@gmail.com)
+ * @brief Implimentation of hash map function
+ * @version 0.1
+ * @date 2021-08-31
+ * 
+ * @copyright Copyright (c) 2021
+ * @addtogroup application
+ * @addtogroup library
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "utils.h"
 #include "internal.h"
 #include "hashMap.h"
@@ -555,3 +570,8 @@ void hashMap_printStats(hashMap_t *map) {
 
     fprintf(stdout,"HasnMap [name %s / occupancy %0.2f / items %ld]\n",map->name,hashMap_calculateOcupancyMetric(map),map->items);
 }
+
+/**
+ * @}
+ * @}
+ */

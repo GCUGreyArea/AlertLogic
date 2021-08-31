@@ -18,7 +18,9 @@ typedef struct fileStats_s fileStats_t;
 
 /**
  * @brief Strutcure for word frequency analysis
- *
+ * @addtogroup application
+ * @addtogroup library
+ * 
  */
 typedef struct wordFreqAn_s {
     char * word;
@@ -53,4 +55,9 @@ void buffScan_addCharToMatchFunc(unsigned char c);
 bool isWordChar(unsigned char c);
 hashMap_t * getHashMap(fileStats_t* stats);
 
+/**
+ * @}
+ * @}
+ * 
+ */
 #endif//_BUFF_SCAN_

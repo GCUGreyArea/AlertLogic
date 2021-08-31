@@ -23,7 +23,10 @@
 
 #include "filestat.h"
 
-
+/**
+ * @brief 
+ * @addtogroup aplication
+ */
 inline static void printHelp() {
 	printf("Usage : filestat <--infile inName> [--outfile stdout --tablesize 4096 --infilebuff size --matchfunc name --wordstats --highfreqwordstats --charstats --scanconfig file --help]\n");
 	printf("\t--infile: <the name of the text file to parse>\n");
@@ -208,3 +211,8 @@ int main(int argc, const char ** argv) {
 
 	return 0;
 }
+
+/**
+ * @}
+ * 
+ */

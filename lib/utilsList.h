@@ -1,6 +1,18 @@
 #ifndef __UTILS_LIST__
 #define __UTILS_LIST__
 
+/**
+ * @file utilsList.h
+ * @author Barry Robinson (barry.w.robinson64@gmail.com)
+ * @brief Generica linked list functionality for sequention orderd access
+ * @version 0.1
+ * @date 2021-08-31
+ * 
+ * @copyright Copyright (c) 2021
+ * @addtogroup application
+ * @addtogroup library
+ */
+
 
 // Functions and structures for list access
 typedef struct utilsListItem_s utilsListItem_t;
@@ -48,4 +60,9 @@ void utilsListPrint(utilsList_t * list);
 
 int utilsListGetSize(utilsList_t * list);
 
+/**
+ * @}
+ * @}
+ * 
+ */
 #endif//__UTILS_LIST__

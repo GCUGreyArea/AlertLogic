@@ -1,3 +1,15 @@
+/**
+ * @file buffScan.c
+ * @author Barry Robinson (barry.w.robinson64@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2021-08-31
+ * 
+ * @copyright Copyright (c) 2021
+ * @addtogroup application
+ * @addtogroup library
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -944,3 +956,8 @@ hashMap_t * getHashMap(fileStats_t* stats) {
 
     return NULL;
 }
+
+/**
+ * @}
+ * @}
+ */

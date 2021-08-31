@@ -12,6 +12,9 @@
  * @param file   The source file
  * @param line   The line the macro was invoked at
  * @return void* The memory requested, or NULL if unsucessful
+ * 
+ * @addtogroup application
+ * @addtogroup library
  */
 void * _alloc_mem_(size_t amount,const char * func, const char * file, int line);
 #define alloc_mem(X) _alloc_mem_(X,__FUNCTION__,__FILE__,__LINE__)
@@ -25,7 +28,10 @@ void * _alloc_mem_(size_t amount,const char * func, const char * file, int line)
 extern void print_err(const char *fmt, ...);
 #define print_err(fmt, ...) fprintf(stderr,"ERROR [file %s / func %s / line %d]: " fmt, __FILE__,__FUNCTION__,__LINE__, ##__VA_ARGS__)
 
-
-
+/**
+ * @}
+ * @}
+ * 
+ */
 
 #endif//_INTERNAL_

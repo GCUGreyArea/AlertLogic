@@ -4,6 +4,8 @@
 /**
  * @brief Library for application and test code
  *
+ * @addtogroup applicaton
+ * @addtogroup library
  */
 
 #ifdef __cplusplus
@@ -27,5 +29,9 @@ extern "C"{
 #ifdef __cplusplus
 }
 #endif
-
+/**
+ * @}
+ * @}
+ * 
+ */
 #endif//__READ_FILE_

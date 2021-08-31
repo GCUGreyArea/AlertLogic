@@ -1,3 +1,15 @@
+/**
+ * @file test_filestat.cpp
+ * @author Barry Robinson (barry.w.robinson64@gmail.com)
+ * @brief Test file read and write functions
+ * @version 0.1
+ * @date 2021-08-31
+ * 
+ * @copyright Copyright (c) 2021
+ * @addtogroup test
+ * @addtogroup library
+ */
+
 #include <gtest/gtest.h>
 #include <libfilestat.h>
 
@@ -265,5 +277,8 @@ TEST(testFiles,testWithLargeFile) {
     printf("==[ testWithLargeFile END ]==\n");
 }
 
-
+/**
+ * @}
+ * @}
+ */
 

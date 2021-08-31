@@ -7,6 +7,11 @@
 // ==================================================================
 #ifndef __FILESTAT_APP__
 #define __FILESTAT_APP__
-
+/**
+ * @brief filestat file scanner
+ * @addtogroup application
+ * 
+ * @}
+ */
 
 #endif//__FILESTAT_APP__
