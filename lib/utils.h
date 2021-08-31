@@ -1,7 +1,6 @@
 #ifndef _UTILS_H__
 #define _UTILS_H__
 
-
 /**
  * @file utils.h
  * @author Barry Robinson (barry.w.robinson64@gmail.com)

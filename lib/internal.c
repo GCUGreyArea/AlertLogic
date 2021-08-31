@@ -6,7 +6,8 @@
  * @date 2021-08-31
  * 
  * @copyright Copyright (c) 2021
- * 
+ * @addtogroup application
+ * @addtogroup library
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,3 +25,8 @@ void * _alloc_mem_(size_t size, const char * func, const char * file, int line) 
 
     return mem;
 }
+
+/**
+ * @}
+ * @} 
+ */

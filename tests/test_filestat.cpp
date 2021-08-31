@@ -6,6 +6,7 @@
  * @date 2021-08-31
  * 
  * @copyright Copyright (c) 2021
+ * @addtogroup application
  * @addtogroup test
  * @addtogroup library
  */
@@ -278,6 +279,7 @@ TEST(testFiles,testWithLargeFile) {
 }
 
 /**
+ * @}
  * @}
  * @}
  */

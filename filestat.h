@@ -20,6 +20,7 @@
  *   1. It is recomended that the project is built and run in a wsl2 instalation or on a Linux machine.
  *   2. A script "./scripts/setup.sh" can be run to set up the dependancies.  This will install development libraries and compilers needed to build "filestat".
  *   3. To build the project run 'make' from the main directory. This will build the libraries, main application, and build, then run the test harness.
+ * @addtogroup application
  */
 
 #ifndef __FILESTAT_APP__

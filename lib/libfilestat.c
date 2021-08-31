@@ -7,10 +7,15 @@
  * @date 2021-08-28
  *
  * @copyright Copyright (c) Alert Logic 2021
- *
+ * @addtogroup application
+ * @addtogroup library
  */
 #include "libfilestat.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @}
+ * @} 
+ */

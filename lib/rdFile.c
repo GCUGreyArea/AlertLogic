@@ -1,3 +1,15 @@
+/**
+ * @file rdFile.c
+ * @author barry Robinson (barry.w.robinson64@dgmail.com)
+ * @brief Internal utilities  
+ * @version 0.1
+ * @date 2021-08-31
+ * 
+ * @copyright Copyright (c) 2021
+ * @addtogroup application
+ * @addtogroup library
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,10 +18,6 @@
 #include "rdFile.h"
 #include "internal.h"
 
-/**
- * @brief Structure for repeated file reads from disk
- *
- */
 struct sFileDetails {
     FILE * filePointer;     //!< Pointer to the file handle
     unsigned char * buffer; //!< Buffer for file reads
@@ -153,3 +161,9 @@ size_t getBuffReadSize(tFileDetails * fl) {
     fprintf(stderr,"ERROR: file structure is uninitialized\n");
     return -1;
 }
+
+/**
+ * @}
+ * @}
+ * 
+ */

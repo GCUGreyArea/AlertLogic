@@ -6,7 +6,8 @@
  * @date 2021-08-28
  *
  * @copyright Copyright (c) Alert Logic 2021
- *
+ * @addtogroup application
+ * @addtogroup library
  */
 #ifndef _BUFF_SCAN_
 #define _BUFF_SCAN_
@@ -23,12 +24,11 @@ typedef struct fileStats_s fileStats_t;
  * 
  */
 typedef struct wordFreqAn_s {
-    char * word;
-    int freq;
-    int len;
-    FILE * outfile;
+    char * word;        // !< The recognised word
+    int freq;           // !< The frequency of the word in the file
+    int len;            // !< The length of the word
+    FILE * outfile;     // !< The file to write out the report about the word
 } wordFreqAn_t;
-
 
 /**
  * @brief Create a buffer for the file stats
