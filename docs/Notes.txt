@@ -8,7 +8,12 @@ NOTES:
     characters are added to the match table. Each character is then compared to the table and dismised, or added to the word. Idealy the input file should be a 
     formated structure, but this is a minor problem. Note that while this functionality is fairly simple, it is also untested.
 
+    3. The filescanner deals with ASCII codes only.
+
 BUILDING THE PROJECT:
     1. It is recomended that the project is built and run in a wsl2 instalation or on a Linux machine.
     2. A script "./scripts/setup.sh" can be run to set up the dependancies.  This will install development libraries and compilers needed to build "filestat".
     3. To build the project run 'make' from the main directory. This will build the libraries, main application, and build, then run the test harness.
+
+LINKS:
+    1. https://www.ascii-code.com/
