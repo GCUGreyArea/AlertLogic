@@ -939,7 +939,7 @@ void printFrequencyAnalysis(fileStats_t* stats) {
         for(int i=0;i<TBL_SIZE;i++) {
             if(stats->ASCII[i] > 0) {
                 double precent = (double)((double)stats->ASCII[i] / (double)stats->charScanned) * 100;
-                fprintf(stats->outfile,"\t\t<%s>%d</%s><charPersent>%0.2f<charPersent>/\n", stats->ASCII_STRINGS[i],stats->ASCII[i],stats->ASCII_STRINGS[i],precent);
+                fprintf(stats->outfile,"\t\t<%s>%d</%s><charPersent>%0.2f<charPersent>\n", stats->ASCII_STRINGS[i],stats->ASCII[i],stats->ASCII_STRINGS[i],precent);
             }
         }
         printEndCharStats(stats);
