@@ -216,6 +216,10 @@ int main(int argc, const char ** argv) {
 	// Output to the file
     printFrequencyAnalysis(stats);
 
+
+	buffScan_release(stats);
+	releaseFile(inFilePt);
+	
 	fclose(outFile);
 
 	return 0;
