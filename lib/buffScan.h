@@ -7,7 +7,7 @@
  *
  * @copyright Copyright (c) Alert Logic 2021
  * @addtogroup application
- * 
+ *
  * @addtogroup library
  * @{
  * @addtogroup buffScan
@@ -25,13 +25,14 @@ typedef struct fileStats_s fileStats_t;
  * @brief Strutcure for word frequency analysis
  * @addtogroup application
  * @addtogroup library
- * 
+ *
  */
 typedef struct wordFreqAn_s {
-    char * word;        // !< The recognised word
-    int freq;           // !< The frequency of the word in the file
-    int len;            // !< The length of the word
-    FILE * outfile;     // !< The file to write out the report about the word
+    char * word;         // !< The recognised word
+    int freq;            // !< The frequency of the word in the file
+    double freqPercent;  // !< Freequency of the word with respect to all scanned words
+    int len;             // !< The length of the word
+    FILE * outfile;      // !< The file to write out the report about the word
 } wordFreqAn_t;
 
 /**

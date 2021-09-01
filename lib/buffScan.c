@@ -1,10 +1,10 @@
 /**
  * @file buffScan.c
  * @author Barry Robinson (barry.w.robinson64@gmail.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2021-08-31
- * 
+ *
  * @copyright Copyright (c) 2021
  * @addtogroup library
  * @{
@@ -50,7 +50,8 @@ typedef bool(wordMatch)(unsigned char c);
 struct fileStats_s {
     int ASCII[TBL_SIZE];
     const char * ASCII_STRINGS[TBL_SIZE];
-    int charScanned;
+    size_t charScanned;
+    size_t wordCount;
     utilsList_t * wordList;
     hashMap_t * map;
     int whiteSpace;
@@ -114,7 +115,7 @@ void wordList_printCB(void * val) {
     }
 
     if(newLen == freq->len) {
-        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><len>%d</len></wordDef>\n",freq->word,freq->freq,freq->len);
+        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f</textPercent><len>%d</len></wordDef>\n",freq->word,freq->freq,freq->freqPercent,freq->len);
     }
     else {
         char * newWord = alloc_mem(sizeof(char)*newLen);
@@ -149,7 +150,7 @@ void wordList_printCB(void * val) {
                     continue;
             }
         }
-        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><len>%d</len></wordDef>\n",newWord,freq->freq,freq->len);
+        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f</textPercent><len>%d</len></wordDef>\n",newWord,freq->freq,freq->freqPercent,freq->len);
         free(newWord);
     }
 }
@@ -452,10 +453,10 @@ inline static bool match_string(void * v1, void* v2) {
 
 /**
  * @brief Match characters in a text file table
- * 
- * @param c 
- * @return true 
- * @return false 
+ *
+ * @param c
+ * @return true
+ * @return false
  */
 bool isTableMatch(unsigned char c) {
     return MATCH[c];
@@ -498,10 +499,10 @@ inline static bool isValidChar(unsigned char c) {
 
 /**
  * @brief Match any printable character..
- * 
- * @param c 
- * @return true 
- * @return false 
+ *
+ * @param c
+ * @return true
+ * @return false
  */
 inline static bool isPrintableCharacter(unsigned char c) {
     switch(c) {
@@ -551,6 +552,7 @@ fileStats_t * buffScan_init(size_t mapSize) {
         buff->charFreqStats   = false;
         buff->wordsFreqStats  = false;
         buff->highestFreeWordStats = false;
+        buff->wordCount = 0;
 
         // Default to standard out.
         buff->outfile  = stdout;
@@ -674,6 +676,8 @@ void doWordFound(fileStats_t* stats,const unsigned char * buffer, size_t start, 
             utilsListAddHead(stats->wordList,(void*)freq);
             hashMap_putDataWithKey(stats->map,freq,wordBuffer);
         }
+
+        stats->wordCount++;
     }
 }
 
@@ -874,6 +878,7 @@ inline static void buildWordFrequencyStats(fileStats_t* stats) {
         size_t averageCommmonWordLen=0;
         wordFreqAn_t * highFreq = NULL;
         while(it) {
+
             // Find the highest freequency word
             wordFreqAn_t * freq = (wordFreqAn_t*) utilsListGetData(it);
             if(freq->freq > high) {
@@ -894,11 +899,15 @@ inline static void buildWordFrequencyStats(fileStats_t* stats) {
         it = utilsListGetTail(stats->wordList);
         while(it) {
             wordFreqAn_t * freq = (wordFreqAn_t*) utilsListGetData(it);
+            // Update the percentage freequancy of each word
+            freq->freqPercent = (double) ((double) freq->freq / (double) stats->wordCount) * 100;
             if(freq->freq == highFreq->freq && freq != highFreq) {
                 averageCommmonWordLen+=freq->len;
                 utilsListAddHead(freqStats->commonWordList, freq);
             }
             it = utilsListGetNext(it);
+
+
         }
 
         freqStats->averageCommmonWordLen = (float) ((float) averageCommmonWordLen / (float) utilsListGetSize(freqStats->commonWordList));
@@ -929,7 +938,8 @@ void printFrequencyAnalysis(fileStats_t* stats) {
         printStartCharStats(stats);
         for(int i=0;i<TBL_SIZE;i++) {
             if(stats->ASCII[i] > 0) {
-                fprintf(stats->outfile,"\t\t<%s>%d</%s>\n", stats->ASCII_STRINGS[i],stats->ASCII[i],stats->ASCII_STRINGS[i]);
+                double precent = (double)((double)stats->ASCII[i] / (double)stats->charScanned) * 100;
+                fprintf(stats->outfile,"\t\t<%s>%d</%s><charPersent>%0.2f<charPersent>\n", stats->ASCII_STRINGS[i],stats->ASCII[i],stats->ASCII_STRINGS[i],precent);
             }
         }
         printEndCharStats(stats);
@@ -944,10 +954,18 @@ void printFrequencyAnalysis(fileStats_t* stats) {
     }
 
     // This is always output.
-    fprintf(stats->outfile,"\t<whiteSpaceCount>%d</whiteSpaceCount>\n",                 stats->whiteSpace);
-    fprintf(stats->outfile, "\t<averageWordLen>%0.2f</averageWordLen>\n",               stats->wordFreqStruct->averageWordLen);
-    fprintf(stats->outfile, "\t<averageHighFreqWorLen>%0.2f</averageHighFreqWorLen>\n", stats->wordFreqStruct->averageCommmonWordLen);
-    fprintf(stats->outfile,"\t<numCharScanned>%d</numCharScanned>\n",                   stats->charScanned);
+    float percent = 0.0;
+    if(stats->whiteSpace == stats->charScanned) {
+        percent = 100;
+    }
+    else {
+        percent = ((float) stats->whiteSpace / (float) stats->charScanned) * 100;
+    }
+
+    fprintf(stats->outfile,"\t<whiteSpaceCount>%d</whiteSpaceCount><percent>%0.2f</percent>\n",    stats->whiteSpace,percent);
+    fprintf(stats->outfile, "\t<averageWordLen>%0.2f</averageWordLen>\n",                          stats->wordFreqStruct->averageWordLen);
+    fprintf(stats->outfile, "\t<averageHighFreqWorLen>%0.2f</averageHighFreqWorLen>\n",            stats->wordFreqStruct->averageCommmonWordLen);
+    fprintf(stats->outfile,"\t<numCharScanned>%ld</numCharScanned>\n",                             stats->charScanned);
     printTableEnd(stats);
 }
 
