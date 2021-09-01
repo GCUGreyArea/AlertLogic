@@ -53,6 +53,9 @@ clean:
 install: $(TARGET)
 	cp $(TARGET) $(INSTDIR)
 
+valgrind: $(TARGET)
+	valgrind --leak-check=full ./$(TARGET) --infile tests/resouces/ascii.txt --wordstats --highfreqwordstats --charstats
+
 doxygen:
 	@echo "Making Doxygen documentation"
 	cd $(DOXYDIR) && doxygen Doxyfile
