@@ -154,6 +154,10 @@ void hashMap_teardown(hashMap_t * map) {
             hashMap_removeAllData(&map->table[i],map->deleteCB);
         }
     }
+
+    // Free the map
+    free(map->table);
+    free(map);
 }
 
 /**

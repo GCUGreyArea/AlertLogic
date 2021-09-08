@@ -115,7 +115,7 @@ void wordList_printCB(void * val) {
     }
 
     if(newLen == freq->len) {
-        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f</textPercent><len>%d</len></wordDef>\n",freq->word,freq->freq,freq->freqPercent,freq->len);
+        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f%%</textPercent><len>%d</len></wordDef>\n",freq->word,freq->freq,freq->freqPercent,freq->len);
     }
     else {
         char * newWord = alloc_mem(sizeof(char)*newLen);
@@ -150,7 +150,7 @@ void wordList_printCB(void * val) {
                     continue;
             }
         }
-        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f</textPercent><len>%d</len></wordDef>\n",newWord,freq->freq,freq->freqPercent,freq->len);
+        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f%%</textPercent><len>%d</len></wordDef>\n",newWord,freq->freq,freq->freqPercent,freq->len);
         free(newWord);
     }
 }
@@ -962,7 +962,7 @@ void printFrequencyAnalysis(fileStats_t* stats) {
         percent = ((float) stats->whiteSpace / (float) stats->charScanned) * 100;
     }
 
-    fprintf(stats->outfile,"\t<whiteSpaceCount>%d</whiteSpaceCount><percent>%0.2f</percent>\n",    stats->whiteSpace,percent);
+    fprintf(stats->outfile,"\t<whiteSpaceCount>%d</whiteSpaceCount><percent>%0.2f%%</percent>\n",  stats->whiteSpace,percent);
     fprintf(stats->outfile, "\t<averageWordLen>%0.2f</averageWordLen>\n",                          stats->wordFreqStruct->averageWordLen);
     fprintf(stats->outfile, "\t<averageHighFreqWorLen>%0.2f</averageHighFreqWorLen>\n",            stats->wordFreqStruct->averageCommmonWordLen);
     fprintf(stats->outfile,"\t<numCharScanned>%ld</numCharScanned>\n",                             stats->charScanned);
