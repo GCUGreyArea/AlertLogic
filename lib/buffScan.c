@@ -115,7 +115,7 @@ void wordList_printCB(void * val) {
     }
 
     if(newLen == freq->len) {
-        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f%%</textPercent><len>%d</len></wordDef>\n",freq->word,freq->freq,freq->freqPercent,freq->len);
+        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f</textPercent><len>%d</len></wordDef>\n",freq->word,freq->freq,freq->freqPercent,freq->len);
     }
     else {
         char * newWord = alloc_mem(sizeof(char)*newLen);
@@ -150,7 +150,7 @@ void wordList_printCB(void * val) {
                     continue;
             }
         }
-        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f%%</textPercent><len>%d</len></wordDef>\n",newWord,freq->freq,freq->freqPercent,freq->len);
+        fprintf(freq->outfile,"\t\t<wordDef><word>%s</word><freq>%d</freq><textPercent>%0.2f</textPercent><len>%d</len></wordDef>\n",newWord,freq->freq,freq->freqPercent,freq->len);
         free(newWord);
     }
 }
@@ -651,7 +651,7 @@ inline static bool isInWordChar(unsigned char c) {
 }
 
 void doWordFound(fileStats_t* stats,const unsigned char * buffer, size_t start, size_t buffLen) {
-    if(buffLen > 1) {
+    if(buffLen > 0) {
 
         char * wordBuffer = (char *) alloc_mem(sizeof(char) * buffLen+1);
         strncpy(wordBuffer,(char*) &buffer[start],buffLen);
@@ -665,7 +665,7 @@ void doWordFound(fileStats_t* stats,const unsigned char * buffer, size_t start, 
             free(wordBuffer);
             freq->freq++;
         }
-        else if(buffLen > 1) {
+        else if(buffLen > 0) {
             freq = alloc_mem(sizeof(wordFreqAn_t));
             freq->word = wordBuffer;
             freq->freq = 1;
@@ -719,14 +719,16 @@ size_t buffScan_scan(fileStats_t* stats,const unsigned char * buffer, size_t buf
 
     size_t i=0;
     for(/*declared above*/i=0;i<buffLen;i++) {
-        if(word && stats->matchFunc(buffer[i])) {
+        bool match = stats->matchFunc(buffer[i]);
+        if(word && match) {
             continue;
         }
-        else if(!word && stats->matchFunc(buffer[i])) {
+        else if(!word && match) {
             word=true;
             startIdx=i;
         }
-        else if(!stats->matchFunc(buffer[i])) {
+
+        if(!match) {
             if(isWhiteSpace(buffer[i])) {
                 stats->whiteSpace++;
             }
@@ -962,7 +964,7 @@ void printFrequencyAnalysis(fileStats_t* stats) {
         percent = ((float) stats->whiteSpace / (float) stats->charScanned) * 100;
     }
 
-    fprintf(stats->outfile,"\t<whiteSpaceCount>%d</whiteSpaceCount><percent>%0.2f%%</percent>\n",  stats->whiteSpace,percent);
+    fprintf(stats->outfile,"\t<whiteSpaceCount>%d</whiteSpaceCount><percent>%0.2f</percent>\n",    stats->whiteSpace,percent);
     fprintf(stats->outfile, "\t<averageWordLen>%0.2f</averageWordLen>\n",                          stats->wordFreqStruct->averageWordLen);
     fprintf(stats->outfile, "\t<averageHighFreqWorLen>%0.2f</averageHighFreqWorLen>\n",            stats->wordFreqStruct->averageCommmonWordLen);
     fprintf(stats->outfile,"\t<numCharScanned>%ld</numCharScanned>\n",                             stats->charScanned);
