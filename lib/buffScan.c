@@ -838,6 +838,11 @@ void printWordAnalasysTable(fileStats_t* stats) {
     fprintf(stats->outfile,"\t</wordFreq>\n");
 }
 
+/**
+ * @brief Build the highest word frequency structure
+ *
+ * @param stats
+ */
 inline static void buildWordFrequencyStats(fileStats_t* stats) {
     wordFreq_t * freqStats = NULL;
     if(stats) {
@@ -903,6 +908,11 @@ inline static void buildWordFrequencyStats(fileStats_t* stats) {
     }
 }
 
+/**
+ * @brief OUtput XML content for highest word freequency
+ *
+ * @param stats
+ */
 inline static void printHighestFreqWords(fileStats_t* stats) {
     if(utilsListGetSize(stats->wordFreqStruct->commonWordList) > 0) {
         fprintf(stats->outfile, "\t<highestFreqWords>\n");
@@ -955,6 +965,12 @@ void printFrequencyAnalysis(fileStats_t* stats) {
     printTableEnd(stats);
 }
 
+/**
+ * @brief Get the Hash Map object for debug
+ *
+ * @param stats
+ * @return hashMap_t*
+ */
 hashMap_t * getHashMap(fileStats_t* stats) {
     if(stats) {
         return stats->map;
