@@ -87,7 +87,7 @@ void wordList_freeCB(void * val) {
 }
 
 /**
- * @brief Write out the words from the word list
+ * @brief Write out the words from the word list in the order they where parsed
  * @note This currently does not take into acount that some characters,
  *       such as '<' or '>' or '&' need to be escapped in XML.
  * @param val
@@ -703,23 +703,17 @@ size_t buffScan_scan(fileStats_t* stats,const unsigned char * buffer, size_t buf
         return -1;
     }
 
-    // If word freequency stats have been claculated, assume we are doing a second parse
-    // and reset the stats. Words in the list will be untouched!
-    if(stats->wordsFreqStats && stats->wordFreqStruct) {
-        fprintf(stderr,"WARNING: Wordstats structure is still in use. Removing\n");
-        utilsListDelete(stats->wordFreqStruct->commonWordList);
-        free(stats->wordFreqStruct);
-        stats->wordFreqStruct = NULL;
-    }
-
-
     // Now scan the buffer for words. Whitespaces have already been scaned and counted.
     bool word=false;
     size_t startIdx=0;
 
     size_t i=0;
     for(/*declared above*/i=0;i<buffLen;i++) {
-        bool match = stats->matchFunc(buffer[i]);
+        unsigned char c = buffer[i];
+        stats->charScanned++;
+        stats->ASCII[(int)c]++;
+
+        bool match = stats->matchFunc(c);
         if(word && match) {
             continue;
         }
@@ -729,7 +723,7 @@ size_t buffScan_scan(fileStats_t* stats,const unsigned char * buffer, size_t buf
         }
 
         if(!match) {
-            if(isWhiteSpace(buffer[i])) {
+            if(isWhiteSpace(c)) {
                 stats->whiteSpace++;
             }
 
@@ -740,13 +734,6 @@ size_t buffScan_scan(fileStats_t* stats,const unsigned char * buffer, size_t buf
         }
     }
 
-    if(stats->charFreqStats) {
-        for(i=0;i<buffLen;i++) {
-            char c = buffer[i];
-            stats->ASCII[(int)c]++;
-            stats->charScanned++;
-        }
-    }
 
     return i; // Number of characters scanned
 }
@@ -859,6 +846,8 @@ inline static void buildWordFrequencyStats(fileStats_t* stats) {
             if(freqStats == NULL) {
                 return;
             }
+            stats->wordFreqStruct = freqStats;
+
 
             // We don't want to free on list deletion, so don't add callback
             listInit_t init = {"highFreqWords", NULL, wordList_printCB,wordLilst_machCB};
@@ -867,8 +856,6 @@ inline static void buildWordFrequencyStats(fileStats_t* stats) {
                 printf("Failed to make common word list\n");
                 return;
             }
-
-            stats->wordFreqStruct = freqStats;
         }
 
         utilsListItem_t * it = utilsListGetTail(stats->wordList);
@@ -880,7 +867,6 @@ inline static void buildWordFrequencyStats(fileStats_t* stats) {
         size_t averageCommmonWordLen=0;
         wordFreqAn_t * highFreq = NULL;
         while(it) {
-
             // Find the highest freequency word
             wordFreqAn_t * freq = (wordFreqAn_t*) utilsListGetData(it);
             if(freq->freq > high) {
@@ -917,10 +903,8 @@ inline static void buildWordFrequencyStats(fileStats_t* stats) {
     }
 }
 
-
-
 inline static void printHighestFreqWords(fileStats_t* stats) {
-    if(utilsListGetSize(stats->wordFreqStruct->commonWordList) > 0){
+    if(utilsListGetSize(stats->wordFreqStruct->commonWordList) > 0) {
         fprintf(stats->outfile, "\t<highestFreqWords>\n");
         utilsListPrint(stats->wordFreqStruct->commonWordList);
         fprintf(stats->outfile, "\t</highestFreqWords>\n");
