@@ -4,7 +4,7 @@
  * @brief Test functionality of hash map
  * @version 0.1
  * @date 2021-08-31
- * 
+ *
  * @copyright Copyright (c) 2021
  * @addtogroup test
  * @{
@@ -74,7 +74,7 @@ TEST(testHashMap, testThatHashMapCanBeMade) {
     size_t ocupation = hashMap_getOcupancy(tbl);
     ASSERT_TRUE(ocupation == 3);
 
-    printf("Map ocupancy [metric %f]\n", hashMap_calculateOcupancyMetric(tbl));
+    printf("Map ocupancy [metric %0.2f%%]\n", hashMap_calculateOcupancyMetric(tbl));
 
     hashMap_debug(tbl);
 
@@ -116,12 +116,15 @@ TEST(testHashMap, testThatHashMapCanBeMade) {
 
     hashMap_deletItterator(it);
 
+    // hashMap_debug(tbl);
+
     // Set up the map so that we can remove items without them being deleted.
     hashMap_setDeleteOnRemove(tbl,false);
 
     bool res = hashMap_removeWithPlace(tbl,place1,(void*) test1);
     ASSERT_TRUE(res);
     ASSERT_EQ(delCalled,0);
+    hashMap_debug(tbl);
 
     hashMap_setDeleteOnRemove(tbl,true);
 
