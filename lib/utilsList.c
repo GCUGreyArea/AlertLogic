@@ -4,7 +4,7 @@
  * @brief Generica linked list functionality for sequention orderd access
  * @version 0.1
  * @date 2021-08-31
- * 
+ *
  * @copyright Copyright (c) 2021
  * @addtogroup library
  * @{
@@ -50,25 +50,28 @@ utilsList_t * utilsListMake(listInit_t * cbs) {
     list->tail = NULL;
     list->items = 0;
 
-	// fprintf(stderr,"Created list [name \"%s\" / addr %p]", list->cbs.list_name, list);
+	debug(LEVEL_DEBUG,"Created list [name \"%s\" / addr %p]", list->cbs.list_name, list);
 
     return list;
 }
 
 void utilsListDelete(utilsList_t * list) {
-    if(list && list->cbs.free_cb) {
+    if(list) {
         utilsListItem_t * next = list->tail;
-
+        int count=0;
         while(next) {
             utilsListItem_t * last = next;
-            list->cbs.free_cb(next->data);
+            if(list->cbs.free_cb) {list->cbs.free_cb(next->data);}
 
             next = next->next;
             free(last);
+            count++;
         }
+
+        debug(LEVEL_INFO,"UtilsList : Freed [nodes %d / elements %d]\n", count, list->items);
     }
 
-    // fprintf(stdout,"Deleting list [name \"%s\" / addr %p]", list->cbs.list_name, list);
+    debug(LEVEL_DEBUG,"Deleting list [name \"%s\" / addr %p]\n", list->cbs.list_name, list);
 
     free(list);
 }
@@ -124,7 +127,7 @@ bool utilsListAddTail(utilsList_t * list, void * data) {
         ret=true;
         list->items++;
 
-		// fprintf(stdout, "List [addr %p / items %d / head %p / Tail %p / name \"%s\"]", list, list->items, list->head, list->tail, list->cbs.list_name);
+		debug(LEVEL_DEBUG, "List [addr %p / items %d / head %p / Tail %p / name \"%s\"]", list, list->items, list->head, list->tail, list->cbs.list_name);
     }
 
     return ret;
@@ -166,7 +169,7 @@ bool utilsListAddHead(utilsList_t * list, void * data) {
         ret=true;
         list->items++;
 
-		// fprintf(stderr, "List [addr %p / items %d / head %p / Tail %p / name \"%s\"]", list, list->items, list->head, list->tail, list->cbs.list_name);
+	    debug(LEVEL_DEBUG, "List [addr %p / items %d / head %p / Tail %p / name \"%s\"]", list, list->items, list->head, list->tail, list->cbs.list_name);
     }
 
     return ret;
@@ -197,7 +200,6 @@ void * utilsListRemoveBy(utilsList_t * list, void * data, list_match_cb * match_
                     }
                 }
 
-				// fprintf(stderr, "Removing list item...");
 				list->items--;
 
                 free(next);
