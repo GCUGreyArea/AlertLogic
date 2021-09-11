@@ -318,7 +318,7 @@ inline static void hashMap_debugNode(hashBaseNode_t * node, size_t place, print_
         while(dataNode) {
             printCB(dataNode->data);
             dataNode = dataNode->next;
-            if(dataNode) fprintf(stdout,",");
+            if(dataNode) {fprintf(stdout,",");}
         }
     }
 
@@ -418,7 +418,7 @@ bool hashMap_removeWithKey(hashMap_t * map, void * keyData) {
     uint32_t key = map->keyCB(keyData);
     size_t place = key & (map->size-1);
 
-    return hashMap_removeWithPlace(map, place,keyData);
+    return hashMap_removeWithPlace(map,place,keyData);
 }
 
 
@@ -474,6 +474,7 @@ bool hashMap_removeWithPlace(hashMap_t * map, size_t place,void * keyData) {
             ret = true;
             break;
         }
+
         // Test the next node
         prev = node;
         node = node->next;
@@ -576,7 +577,7 @@ void hashMap_printStats(hashMap_t *map) {
         return;
     }
 
-    fprintf(stdout,"HasnMap [name %s / occupancy %0.2f / items %ld]\n",map->name,hashMap_calculateOcupancyMetric(map),map->items);
+    debug(LEVEL_INFO,"HasnMap [name %s / occupancy %0.2f%% / items %ld]\n",map->name,hashMap_calculateOcupancyMetric(map),map->items);
 }
 
 /**
