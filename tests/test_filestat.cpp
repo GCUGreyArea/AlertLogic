@@ -4,13 +4,13 @@
  * @brief Test file read and write functions
  * @version 0.1
  * @date 2021-08-31
- * 
+ *
  * @copyright Copyright (c) 2021
  * @addtogroup test
  * @{
  * @addtogroup FileStats
  * @{
- * 
+ *
  */
 
 #include <gtest/gtest.h>
@@ -115,6 +115,7 @@ TEST(testFiles, testThatTestFileCanBeCreated) {
 
     // Teardown
     releaseFile(fp);
+    buffScan_release(stats);
     remove("./test0.txt");
 }
 
@@ -130,7 +131,7 @@ TEST(testFiles, testGoodFileCanBeRead) {
 
     // Now test the file library againt the file
     tFileDetails * fp = openFile("./test1.txt", strlen(phrase)+1);
-    char buffer[strlen(phrase)+1] = {'\0'};
+    char * buffer = new char[sizeof(char) * strlen(phrase)+2];
 
     EXPECT_TRUE(fp != nullptr);
 
@@ -164,7 +165,7 @@ TEST(testFiles, testGoodFileCanBeRead) {
 
     releaseFile(fp);
     remove("./test1.txt");
-
+    delete [] buffer;
 
     printf("==[ testGoodFileCanBeRead END ]==\n");
 }
@@ -220,9 +221,13 @@ TEST(testFiles,testFileReadOnResorceFile) {
 
 TEST(testFiles,testWithLargeFile) {
     printf("==> testWithLargeFile <==\n");
-    // const char * inFile = "./resouces/ascii.txt";
-    const char * inFile = "./main.cpp";
+    const char * inFile = "./resouces/ascii.txt";
+    // const char * inFile = "./main.cpp";
     const char * outFile = "./output.xml";
+
+
+    set_debug_level(LEVEL_INFO);
+
     tFileDetails * fp = openFile(inFile, FILE_READ_MAX);
     EXPECT_TRUE(fp != nullptr);
 
@@ -230,12 +235,15 @@ TEST(testFiles,testWithLargeFile) {
     FILE * write = fopen(outFile, "w");
 
     const unsigned char * buff = getNexFileBuffer(fp);
+    EXPECT_TRUE(buff != NULL);
+    // assert(buff);
+
     size_t readSz = getLastReadSize(fp);
+    // ((char*)buff)[readSz-1] = '\0';
+    // printf("Input file %s\n", buff);
 
-    printf("Input file %s\n", (char*) buff);
 
-
-    fileStats_t * stats = buffScan_init(4096);
+    fileStats_t * stats = buffScan_init(4096*2);
 
     // These need to be set before we scan
     buffScan_setCharFreqStats(stats,true);
@@ -268,11 +276,12 @@ TEST(testFiles,testWithLargeFile) {
 
     buff = getNexFileBuffer(fp);
     EXPECT_TRUE(buff != NULL);
+    readSz = getLastReadSize(fp);
+    ((char*)buff)[readSz-1] = '\0';
 
-    printf("Output file %s\n", (char*) buff);
+    printf("Output file %s\n", buff);
 
     releaseFile(fp);
-
 
     // Teardown the scanner and remove the file
     buffScan_release(stats);
