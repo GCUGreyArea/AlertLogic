@@ -27,7 +27,7 @@
 #include "filestat.h"
 /**
  * @brief Help generatore for filestat application
- * 
+ *
  */
 void printHelp() {
 	printf("Usage : filestat <--infile inName> [--outfile stdout --tablesize 4096 --infilebuff size --matchfunc name --wordstats --highfreqwordstats --charstats --scanconfig file --help]\n");
@@ -52,10 +52,10 @@ void printHelp() {
 
 /**
  * @brief Main function for filestat applicatoin
- * 
- * @param argc 
- * @param argv 
- * @return int 
+ *
+ * @param argc
+ * @param argv
+ * @return int
  */
 int main(int argc, const char ** argv) {
 	char * inputFile = NULL;
@@ -178,7 +178,7 @@ int main(int argc, const char ** argv) {
 		if(b == NULL) {
 			fprintf(stderr,"ERROR: Memory allocation failure, exiting..\n");
 			exit(1);
-		} 
+		}
 
 		// Read in the file and add all characters to the table
 		int act = fread(b, size, 1, f);
@@ -204,7 +204,7 @@ int main(int argc, const char ** argv) {
     buffScan_setWordStats(stats,wordStats);
 	buffScan_setHighestFreqWordsStats(stats,highestFreeWordStats);
     buffScan_setOutputFile(stats,outFile);
-	
+
 
 	// Get the read size and start reading
 	size_t bufferLen = getBuffReadSize(inFilePt);
@@ -219,7 +219,7 @@ int main(int argc, const char ** argv) {
 
 	buffScan_release(stats);
 	releaseFile(inFilePt);
-	
+
 	fclose(outFile);
 
 	return 0;
