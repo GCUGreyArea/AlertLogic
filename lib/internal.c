@@ -33,6 +33,10 @@ void set_debug_level(int level) {
     debug_level = level;
 }
 
+void add_debug_level(int level) {
+    debug_level  = debug_level | level;
+}
+
 /**
  * @}
  * @}

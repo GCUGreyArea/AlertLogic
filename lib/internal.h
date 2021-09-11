@@ -37,12 +37,10 @@ extern int debug_level;
 #define LEVEL_FATAL  0b00001000
 
 extern void debug(int lvl, const char * fmt, ...);
-#define debug(lvl,fmt,...) \
-    if(lvl & debug_level) { \
-        fprintf(stdout,fmt,##_VA_ARGS__);\
-    }
+#define debug(lvl,fmt, ...) if(lvl & debug_level) {fprintf(stdout,fmt, ##__VA_ARGS__);}
 
 void set_debug_level(int level);
+void add_debug_level(int level);
 /**
  * @}
  * @}
