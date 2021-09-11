@@ -1,10 +1,10 @@
 /**
  * @file rdFile.c
  * @author barry Robinson (barry.w.robinson64@dgmail.com)
- * @brief Internal utilities  
+ * @brief Internal utilities
  * @version 0.1
  * @date 2021-08-31
- * 
+ *
  * @copyright Copyright (c) 2021
  * @addtogroup library
  * @{
@@ -74,7 +74,7 @@ tFileDetails * openFile(const char * filePath, size_t rdBlock) {
 
     // Now do the read size for the buffer
     if(rdBlock == FILE_READ_MAX) {
-        fl->readSize = fl->fileSize;
+        fl->readSize = fl->fileSize-1;
     }
     else {
         fl->readSize = rdBlock;
@@ -93,6 +93,7 @@ tFileDetails * openFile(const char * filePath, size_t rdBlock) {
         return NULL;
     }
 
+    fl->lastReadSz = 0;
     return fl;
 }
 
@@ -134,11 +135,11 @@ const unsigned char * getNexFileBuffer(tFileDetails * fl) {
 
     // printf("File read size : %ld\n", readSz);
 
-    int act = fread(fl->buffer, readSz, 1, fl->filePointer);
+    int act = fread((void*) fl->buffer, readSz, 1, fl->filePointer);
     if(act == 1) {
         fl->readTotal += readSz;
         fl->lastReadSz = readSz;
-        return (const unsigned char*) fl->buffer;
+        return fl->buffer;
     }
 
     fprintf(stderr,"ERROR: Nothing read\n");
@@ -167,5 +168,5 @@ size_t getBuffReadSize(tFileDetails * fl) {
 /**
  * @}
  * @}
- * 
+ *
  */
