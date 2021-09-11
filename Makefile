@@ -21,8 +21,12 @@ TESTHDR := $(patsubst %.cpp,%.h,$(TESTSRC))
 
 CC     = gcc
 CPP    = g++
-CFLAGS = -g -std=c11 -Wall -ggdb3 -I$(LIBDIR) -L$(LIBDIR)
-GFLAGS = -g -std=c++14 -Wall -ggdb3  -I$(LIBDIR) -L$(LIBDIR)
+VG     = valgrind
+VGARGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose
+VGLOG  = --log-file=$(TARGET)-valgrind-out.txt
+CFLAGS = -g -std=c11 -Wall -ggdb3 -fsanitize=address -I$(LIBDIR) -L$(LIBDIR)
+GFLAGS = -g -std=c++14 -Wall -ggdb3 -fsanitize=address -I$(LIBDIR) -L$(LIBDIR)
+RFLAGS = --infile ./tests/resouces/ascii.txt --tablesize 4096 --wordstats --highfreqwordstats --charstats
 
 all: $(LIB) $(TARGET) $(TESTTARGET)
 
@@ -53,21 +57,27 @@ clean:
 install: $(TARGET)
 	cp $(TARGET) $(INSTDIR)
 
-valgrind: $(TARGET)
-	valgrind --leak-check=full ./$(TARGET) --infile tests/resouces/ascii.txt --wordstats --highfreqwordstats --charstats
+valgrind: valgrind $(TARGET)
+	@echo Running valgrind
+	$(VG) $(VGARGS) ./$(TARGET) --infile tests/resouces/ascii.txt --wordstats --highfreqwordstats --charstats
+
 
 doxygen:
 	@echo "Making Doxygen documentation"
 	cd $(DOXYDIR) && doxygen Doxyfile
 
-test:
+test: ./$(TESTDIR)/$(TESTTARGET)
 	cd $(LIBDIR) && make
 	cd $(TESTDIR) && make
-	./$(TESTDIR)/$(TESTTARGET)
+	cd $(TESTDIR) && ./$(TESTTARGET)
+
+run : $(TARGET)
+	./$(TARGET) $(RFLAGS)
 
 help:
 	@echo "Run: 'make' to build project with test"
 	@echo "Run: 'make test' to build and run unit tests"
 	@echo "Run: 'make doxygen' to build doxygen documentation"
 
-# .PHONEY: all doxygen
+.PHONEY: all doxygen valgrind help
+

@@ -17,13 +17,15 @@ HDR    := $(patsubst %.c,%.h,$(SRC))
 
 CC     = gcc
 CPP    = g++
-CFLAGS = -g -std=c11 -Wall -ggdb3 -I$(LIBDIR) -L$(LIBDIR)
-GFLAGS = -g -std=c++14 -Wall -ggdb3 -I$(LIBDIR) -L$(LIBDIR)
+CFLAGS = -g -std=c11 -Wall -ggdb3 -fsanitize=address -I$(LIBDIR) -L$(LIBDIR)
+GFLAGS = -g -std=c++14 -Wall -ggdb3 -fsanitize=address -I$(LIBDIR) -L$(LIBDIR)
 
 all: $(TARGET) $(OBJ)
 
 $(TARGET) : $(OBJ) $(HDR) $(LIB)
 	$(CPP) $(GFLAGS) $(OBJ) -o $(TARGET) -l$(NAME) -lgtest -lgtest_main -lpthread  -L$(LIBDIR) -I$(LIBDIR)
+
+test: $(TARGET)
 	./$(TARGET)
 
 %.o: %.c
