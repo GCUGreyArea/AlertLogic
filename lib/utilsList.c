@@ -50,7 +50,7 @@ utilsList_t * utilsListMake(listInit_t * cbs) {
     list->tail = NULL;
     list->items = 0;
 
-	debug(LEVEL_DEBUG,"Created list [name \"%s\" / addr %p]", list->cbs.list_name, list);
+	debug(LEVEL_DEBUG,"Created list [name \"%s\" / addr %p]\n", list->cbs.list_name, list);
 
     return list;
 }
@@ -127,7 +127,7 @@ bool utilsListAddTail(utilsList_t * list, void * data) {
         ret=true;
         list->items++;
 
-		debug(LEVEL_DEBUG, "List [addr %p / items %d / head %p / Tail %p / name \"%s\"]", list, list->items, list->head, list->tail, list->cbs.list_name);
+		debug(LEVEL_DEBUG, "List [addr %p / items %d / head %p / Tail %p / name \"%s\"]\n", list, list->items, list->head, list->tail, list->cbs.list_name);
     }
 
     return ret;
@@ -169,7 +169,7 @@ bool utilsListAddHead(utilsList_t * list, void * data) {
         ret=true;
         list->items++;
 
-	    debug(LEVEL_DEBUG, "List [addr %p / items %d / head %p / Tail %p / name \"%s\"]", list, list->items, list->head, list->tail, list->cbs.list_name);
+	    debug(LEVEL_DEBUG, "List [addr %p / items %d / head %p / Tail %p / name \"%s\"]\n", list, list->items, list->head, list->tail, list->cbs.list_name);
     }
 
     return ret;
