@@ -12,7 +12,7 @@
  * @param file   The source file
  * @param line   The line the macro was invoked at
  * @return void* The memory requested, or NULL if unsucessful
- * 
+ *
  * @addtogroup libnrary
  * @{
  * @addtogroup internal
@@ -30,10 +30,23 @@ void * _alloc_mem_(size_t amount,const char * func, const char * file, int line)
 extern void print_err(const char *fmt, ...);
 #define print_err(fmt, ...) fprintf(stderr,"ERROR [file %s / func %s / line %d]: " fmt, __FILE__,__FUNCTION__,__LINE__, ##__VA_ARGS__)
 
+extern int debug_level;
+#define LEVEL_INFO   0b00000001
+#define LEVEL_DEBUG  0b00000010
+#define LEVEL_ERROR  0b00000100
+#define LEVEL_FATAL  0b00001000
+
+extern void debug(int lvl, const char * fmt, ...);
+#define debug(lvl,fmt,...) \
+    if(lvl & debug_level) { \
+        fprintf(stdout,fmt,##_VA_ARGS__);\
+    }
+
+void set_debug_level(int level);
 /**
  * @}
  * @}
- * 
+ *
  */
 
 #endif//_INTERNAL_

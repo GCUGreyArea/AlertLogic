@@ -1,12 +1,12 @@
 /**
  * @file internal.c
  * @author barry Robinson (barry.w.robinson64@dgmail.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2021-08-31
- * 
+ *
  * @copyright Copyright (c) 2021
- * @addtogroup library 
+ * @addtogroup library
  * @{
  * @addtogroup internal
  * @{
@@ -17,6 +17,7 @@
 
 #include "internal.h"
 
+int debug_level=0;
 
 void * _alloc_mem_(size_t size, const char * func, const char * file, int line) {
     void * mem = malloc(size);
@@ -28,7 +29,11 @@ void * _alloc_mem_(size_t size, const char * func, const char * file, int line) 
     return mem;
 }
 
+void set_debug_level(int level) {
+    debug_level = level;
+}
+
 /**
  * @}
- * @} 
+ * @}
  */
