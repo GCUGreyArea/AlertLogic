@@ -846,12 +846,14 @@ void printWordAnalasysTable(fileStats_t* stats) {
 inline static void buildWordFrequencyStats(fileStats_t* stats) {
     wordFreq_t * freqStats = NULL;
     if(stats) {
+
         if(stats->wordFreqStruct == NULL) {
             freqStats = alloc_mem(sizeof(wordFreq_t));
             if(freqStats == NULL) {
                 return;
             }
             stats->wordFreqStruct = freqStats;
+
 
 
             // We don't want to free on list deletion, so don't add callback
@@ -862,49 +864,68 @@ inline static void buildWordFrequencyStats(fileStats_t* stats) {
                 return;
             }
         }
-
-        utilsListItem_t * it = utilsListGetTail(stats->wordList);
-        if(it == NULL) {return;} // There are no words!
+        else {
+            fprintf(stderr,"WARNING: wrdoFrequencyStruct already alocated\n");
+        }
 
         // Iterate through the list to find the word with the highest freequency
         int high=0;
         size_t totalWordLen=0;
         size_t averageCommmonWordLen=0;
-        wordFreqAn_t * highFreq = NULL;
-        while(it) {
-            // Find the highest freequency word
-            wordFreqAn_t * freq = (wordFreqAn_t*) utilsListGetData(it);
-            if(freq->freq > high) {
-                highFreq = freq;
-                high=freq->freq;
+
+        // Only do word frequency if we have words
+        if(utilsListGetSize(stats->wordList)) {
+            wordFreqAn_t * highFreq = NULL;
+            utilsListItem_t * it = utilsListGetTail(stats->wordList);
+            if(it == NULL) {
+                fprintf(stderr,"ERROR: utilsListGetTail(stats->wordList) return NULL\n");
+                return;
             }
 
-            // This will be used to calculate the average word length
-            totalWordLen+=freq->len;
-            it = utilsListGetNext(it);
-        }
+            // There are no words!
+            while(it) {
+                // Find the highest freequency word
+                wordFreqAn_t * freq = (wordFreqAn_t*) utilsListGetData(it);
+                if(freq->freq > high) {
+                    highFreq = freq;
+                    high=freq->freq;
+                }
 
-        // Add our high freequency to the list
-        utilsListAddHead(freqStats->commonWordList, highFreq);
-        averageCommmonWordLen+=highFreq->len;
-
-        // Now do it again to find other words that have the same freequency
-        it = utilsListGetTail(stats->wordList);
-        while(it) {
-            wordFreqAn_t * freq = (wordFreqAn_t*) utilsListGetData(it);
-            // Update the percentage freequancy of each word
-            freq->freqPercent = (double) ((double) freq->freq / (double) stats->wordCount) * 100;
-            if(freq->freq == highFreq->freq && freq != highFreq) {
-                averageCommmonWordLen+=freq->len;
-                utilsListAddHead(freqStats->commonWordList, freq);
+                // This will be used to calculate the average word length
+                totalWordLen+=freq->len;
+                it = utilsListGetNext(it);
             }
-            it = utilsListGetNext(it);
+
+            // Add our high freequency to the list
+            utilsListAddHead(freqStats->commonWordList, highFreq);
+            averageCommmonWordLen+=highFreq->len;
+
+            // Now do it again to find other words that have the same freequency
+            it = utilsListGetTail(stats->wordList);
+            while(it) {
+                wordFreqAn_t * freq = (wordFreqAn_t*) utilsListGetData(it);
+                // Update the percentage freequancy of each word
+                freq->freqPercent = (double) ((double) freq->freq / (double) stats->wordCount) * 100;
+                if(freq->freq == highFreq->freq && freq != highFreq) {
+                    averageCommmonWordLen+=freq->len;
+                    utilsListAddHead(freqStats->commonWordList, freq);
+                }
+                it = utilsListGetNext(it);
 
 
+            }
         }
 
-        freqStats->averageCommmonWordLen = (float) ((float) averageCommmonWordLen / (float) utilsListGetSize(freqStats->commonWordList));
-        freqStats->averageWordLen = (float) ((float) totalWordLen / (float) utilsListGetSize(stats->wordList));
+        debug(LEVEL_DEBUG,"buildWordFrequencyStats [averageCommmonWordLen %ld / num words %d]\n", averageCommmonWordLen, utilsListGetSize(freqStats->commonWordList));
+
+        if(utilsListGetSize(stats->wordList)){
+            freqStats->averageCommmonWordLen = (float) ((float) averageCommmonWordLen / (float) utilsListGetSize(freqStats->commonWordList));
+            freqStats->averageWordLen = (float) ((float) totalWordLen / (float) utilsListGetSize(stats->wordList));
+        }
+        else {
+            freqStats->averageCommmonWordLen = 0;
+            freqStats->averageWordLen = 0;
+        }
     }
 }
 
@@ -927,7 +948,6 @@ inline static void printHighestFreqWords(fileStats_t* stats) {
  */
 void printFrequencyAnalysis(fileStats_t* stats) {
     buildWordFrequencyStats(stats);
-
     printTableStart(stats);
 
     if(stats->charFreqStats) {
