@@ -30,9 +30,7 @@
             "program": "${workspaceFolder}/filestat",
             "args": [
                 "--infile",
-                "./tests/main.cpp",
-                "--outfile",
-                "./out.xml",
+                "./in.txt",
                 "--tableSize",
                 "32768",
                 "--wordstats",
