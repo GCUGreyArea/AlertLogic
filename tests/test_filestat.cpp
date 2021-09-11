@@ -225,9 +225,6 @@ TEST(testFiles,testWithLargeFile) {
     // const char * inFile = "./main.cpp";
     const char * outFile = "./output.xml";
 
-
-    set_debug_level(LEVEL_INFO);
-
     tFileDetails * fp = openFile(inFile, FILE_READ_MAX);
     EXPECT_TRUE(fp != nullptr);
 
