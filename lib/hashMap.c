@@ -4,7 +4,7 @@
  * @brief Implimentation of hash map function
  * @version 0.1
  * @date 2021-08-31
- * 
+ *
  * @copyright Copyright (c) 2021
  * @addtogroup library
  * @{
@@ -129,10 +129,13 @@ inline static void hashMap_removeAllData(hashBaseNode_t * node, delete_data_CB *
     if(node == NULL) return;
 
     struct hashNode_s * head = node->head;
+    struct hashNode_s * last = head;
     while(head) {
-        cb(head->data);
+        if(cb) {cb(head->data);}
         head->data = NULL;
+        last = head;
         head = head->next;
+        free(last);
     }
 }
 
@@ -148,11 +151,9 @@ void hashMap_teardown(hashMap_t * map) {
         return;
     }
 
-    // If the callback is define, first delete all the data
-    if(map->deleteCB) {
-        for(size_t i=0;i<map->size;i++) {
-            hashMap_removeAllData(&map->table[i],map->deleteCB);
-        }
+    // Delete all the the nodes and if the callback is defined, the data
+    for(size_t i=0;i<map->size;i++) {
+        hashMap_removeAllData(&map->table[i],map->deleteCB);
     }
 
     // Free the map
@@ -242,6 +243,7 @@ size_t hashMap_putDataWithKey(hashMap_t * map, void * data, void * keyData) {
         node->data    = data;
         map->table[place].tail->next = node;
         map->table[place].tail = node;
+        node->next = NULL;
     }
 
     map->table[place].ocupancy++;
