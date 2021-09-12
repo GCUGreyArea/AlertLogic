@@ -15,7 +15,7 @@ formated structure, but this is a minor problem. Note that while this functional
 3. To build the project run 'make' from the main directory. This will build the libraries, main application, and build, then run the test harness.
 
 ### Known problems 
-1. Currentlt the program is based on a very simple stateless parser that would need to read in a file on one chunk to guarentee that all symbols where parsed correctly. If it is interrupted while parsing a word which lies between two chunck of the file, say "swindon", what you might get are the words "swin" and "don" (depending on where the break ocured. To rectify this we need to save the state of the current parsed word and give the parser a notion of streem (file) size in terms of number of bufferes it will need to parse.
+1. Currentlt the program is based on a very simple stateless parser that would need to read in a file on one chunk to guarentee that all symbols where parsed correctly. If it is interrupted while parsing a word which lies between two chunck of the file, say "swindon", what you might get are the words "swin" and "don" (depending on where the break ocured). To rectify this we need to save the state of the current parsed word and give the parser a notion of streem (file) size in terms of number of bufferes it will need to parse.
 
 ### LINKS:
 1. https://www.ascii-code.com/
